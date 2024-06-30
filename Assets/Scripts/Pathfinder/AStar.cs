@@ -34,7 +34,7 @@ namespace HexagonGridPathfinder.Pathfinder
                 Node currentNode = openList[0];
                 openList.RemoveAt(0);
 
-                if (currentNode.Cell == cellEnd)
+                if (currentNode.Cell.GridPosition == cellEnd.GridPosition)
                     return RetracePath(currentNode);
 
                 closedList.Add(currentNode.Cell);
@@ -49,8 +49,8 @@ namespace HexagonGridPathfinder.Pathfinder
 
                     if (existingNode == null)
                     {
-                        float hCost = GetHeuristic(neighbor, cellEnd);
-                        openList.Add(new Node(neighbor, currentNode, currentNodeCostFromStart, hCost));
+                        float heuristicCost = GetHeuristic(neighbor, cellEnd);
+                        openList.Add(new Node(neighbor, currentNode, currentNodeCostFromStart, heuristicCost));
                     }
                     else if (currentNodeCostFromStart < existingNode.CostFromStart)
                     {
@@ -80,13 +80,13 @@ namespace HexagonGridPathfinder.Pathfinder
 
         private static float GetHeuristic(ICell selectedCell, ICell targetedCell)
         {
-            return Mathf.Abs(selectedCell.GridPosition.x - targetedCell.GridPosition.x) +
-                   Mathf.Abs(selectedCell.GridPosition.y - targetedCell.GridPosition.y);
+            return (selectedCell.GridPosition.x - targetedCell.GridPosition.x) +
+                   (selectedCell.GridPosition.y - targetedCell.GridPosition.y);
         }
 
         private static float GetDistance(ICell selectedCell, ICell targetedCell)
         {
-            return 1;
+            return Vector2Int.Distance(selectedCell.GridPosition, targetedCell.GridPosition);
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using HexagonGridPathfinder.Pathfinder.Interfaces;
 using UnityEngine;
 
 namespace HexagonGridPathfinder.Sample
@@ -15,10 +17,24 @@ namespace HexagonGridPathfinder.Sample
         private float _widthOffset;
         private float _heightOffset;
 
+        private MapController _mapController;
+        private Dictionary<Vector2Int, HexCellButton> _hexCellButtons;
+
         private void Start()
         {
+            _mapController = FindObjectOfType<MapController>();
+            _hexCellButtons = new Dictionary<Vector2Int, HexCellButton>();
+            MapController.OnPathDefined += HighlightPath;
             CalculateHexDimensions();
             SpawnHexGrid();
+        }
+
+        private void HighlightPath(IList<ICell> path)
+        {
+            foreach (ICell cell in path)
+            {
+                _hexCellButtons[cell.GridPosition].ToggleHighlight();
+            }
         }
 
         private void CalculateHexDimensions()
@@ -33,16 +49,30 @@ namespace HexagonGridPathfinder.Sample
         {
             Vector2 panelSize = parentPanel.rect.size;
             Vector2 startPosition = new Vector2(-panelSize.x / 2, -panelSize.y / 2);
+            List<ICell> hexCells = CreateCells(startPosition);
+            _mapController.SetupMap(hexCells);
+        }
 
+        private List<ICell> CreateCells(Vector2 startPosition)
+        {
+            List<ICell> hexCells = new List<ICell>();
+            
             for (int x = 0; x < gridWidth; x++)
             {
                 for (int y = 0; y < gridHeight; y++)
                 {
+                    Vector2Int gridCoordinate = new Vector2Int(x, y);
                     Vector3 position = CalculateHexPosition(x, y, startPosition);
                     HexCellButton hexCellButton = CreateHexagon(position);
-                    hexCellButton.SetupCell(new HexCell(new Vector2Int(x, y), true));
+                    hexCellButton.gameObject.name = $"Hex {gridCoordinate}";
+                    _hexCellButtons.Add(gridCoordinate, hexCellButton);
+                    ICell cell = new HexCell(gridCoordinate, true);
+                    hexCells.Add(cell);
+                    hexCellButton.SetupCell(cell);
                 }
             }
+           
+            return hexCells;
         }
 
         private Vector3 CalculateHexPosition(int x, int y, Vector2 startPosition)

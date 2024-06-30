@@ -1,3 +1,5 @@
+using System;
+using HexagonGridPathfinder.Sample;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +12,6 @@ namespace HexagonGridPathfinder.Game
         public TextMeshProUGUI startCoordinatesText;
         public TextMeshProUGUI endCoordinatesText;
         public TextMeshProUGUI pathLengthText;
-        public Button reloadButton;
         
         public void UpdateStartCoordinates(Vector2Int coordinates)
         {
