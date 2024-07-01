@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HexagonGridPathfinder.Pathfinder;
 using HexagonGridPathfinder.Pathfinder.Interfaces;
 using UnityEngine;
 

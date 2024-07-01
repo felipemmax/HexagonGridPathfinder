@@ -1,7 +1,7 @@
 using HexagonGridPathfinder.Pathfinder.Interfaces;
 using UnityEngine;
 
-namespace HexagonGridPathfinder.Sample
+namespace HexagonGridPathfinder.Pathfinder
 {
     [System.Serializable]
     public class HexCell : ICell

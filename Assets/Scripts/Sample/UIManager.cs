@@ -1,11 +1,8 @@
-using System;
-using HexagonGridPathfinder.Sample;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-namespace HexagonGridPathfinder.Game
+namespace HexagonGridPathfinder.Sample
 {
     public class UIManager : MonoBehaviour
     {

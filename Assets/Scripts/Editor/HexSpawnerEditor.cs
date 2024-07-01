@@ -1,4 +1,3 @@
-using HexagonGridPathfinder.Game;
 using HexagonGridPathfinder.Sample;
 using UnityEditor;
 using UnityEngine;

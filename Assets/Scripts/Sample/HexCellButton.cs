@@ -1,5 +1,3 @@
-using System;
-using HexagonGridPathfinder.Pathfinder.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,25 +8,24 @@ namespace HexagonGridPathfinder.Sample
     {
         [SerializeField] private GameObject notWalkableIcon;
         [SerializeField] private GameObject characterIcon;
-
         private Vector2Int _coordinate;
         private Image _image;
-        private Color _previousColor;
-        
+        private CellColorManager _colorManager;
+
         private void Start()
         {
             _image = GetComponent<Image>();
+            _colorManager = new CellColorManager(_image);
         }
 
         public void SetupCell(Vector2Int coordinate)
         {
             _coordinate = coordinate;
         }
-        
+
         public void Reset()
         {
-            _image.color = Color.white;
-            _previousColor = Color.white;
+            _colorManager.Reset();
             characterIcon.SetActive(false);
         }
 
@@ -45,10 +42,9 @@ namespace HexagonGridPathfinder.Sample
 
         public void HighlightColor()
         {
-            _image.color = Color.yellow;
-            _previousColor = Color.yellow;
+            _colorManager.HighlightColor();
         }
-        
+
         public void OnPointerClick(PointerEventData eventData)
         {
             switch (eventData.button)
@@ -66,13 +62,12 @@ namespace HexagonGridPathfinder.Sample
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _previousColor = _image.color;
-            _image.color = Color.gray;
+            _colorManager.OnPointerEnter();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _image.color = _previousColor;
+            _colorManager.OnPointerExit();
         }
     }
 }

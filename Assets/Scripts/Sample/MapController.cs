@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HexagonGridPathfinder.Game;
 using HexagonGridPathfinder.Pathfinder;
 using HexagonGridPathfinder.Pathfinder.Interfaces;
 using UnityEngine;
@@ -25,6 +24,7 @@ namespace HexagonGridPathfinder.Sample
         {
             OnCellChosen += CellChosen;
             OnCellWalkableToggled += OnCellWalkableToggle;
+            OnPathReset += ResetPath;
             _uiManager = FindObjectOfType<UIManager>();
         }
 
@@ -85,6 +85,15 @@ namespace HexagonGridPathfinder.Sample
                 _uiManager.UpdatePathLength(0);
                 OnStartPositionDefined.Invoke(_startCell.GridPosition);
             }
+        }
+
+        void ResetPath()
+        {
+            _startCell = null;
+            _endCell = null;
+            _uiManager.UpdateStartCoordinates(default);
+            _uiManager.UpdateEndCoordinates(default);
+            _uiManager.UpdatePathLength(0);
         }
     }
 }
