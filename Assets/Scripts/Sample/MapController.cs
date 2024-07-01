@@ -39,6 +39,8 @@ namespace HexagonGridPathfinder.Sample
             OnCellChosen = null;
             OnStartPositionDefined = null;
             OnPathReset = null;
+            OnPathDefined = null;
+            OnCellWalkableToggled = null;
         }
         
         public void SetupMap(List<ICell> cells)
