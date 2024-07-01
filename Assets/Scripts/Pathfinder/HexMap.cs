@@ -33,8 +33,6 @@ namespace HexagonGridPathfinder.Pathfinder
 
         public IEnumerable<ICell> GetNeighbors(ICell cell)
         {
-            Debug.Log("CellNeighbor " + cell.GridPosition);
-            
             IEnumerable<Vector2Int> neighborOffsets = GetNeighborOffset(cell.GridPosition);
             
             foreach (Vector2Int offset in neighborOffsets)
@@ -43,7 +41,6 @@ namespace HexagonGridPathfinder.Pathfinder
 
                 if (_cells.TryGetValue(neighborPosition, out ICell cellNeighbor))
                 {
-                    Debug.Log("Neighbor " + neighborPosition);
                     yield return cellNeighbor;
                 }
             }
