@@ -28,6 +28,11 @@ namespace HexagonGridPathfinder.Game
             pathLengthText.text = $"Path Length: {length}";
         }
 
+        public void ShowPathNotFound()
+        {
+            pathLengthText.text = $"No path found";
+        }
+
         public void ReloadScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

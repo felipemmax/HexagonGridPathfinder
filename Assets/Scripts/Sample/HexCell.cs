@@ -6,8 +6,8 @@ namespace HexagonGridPathfinder.Sample
     [System.Serializable]
     public class HexCell : ICell
     {
-        public Vector2Int GridPosition { get; }
-        public bool IsWalkable { get; private set; }
+        public Vector2Int GridPosition { get; private set; }
+        public bool IsWalkable { get; set; }
         
         public HexCell(Vector2Int gridPosition, bool isWalkable)
         {

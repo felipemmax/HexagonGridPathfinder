@@ -6,34 +6,47 @@ using UnityEngine.UI;
 
 namespace HexagonGridPathfinder.Sample
 {
-    public class HexCellButton : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+    public class HexCellButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        public HexCell Cell { get; private set; }
-
         [SerializeField] private GameObject notWalkableIcon;
         [SerializeField] private GameObject characterIcon;
 
-        public void SetupCell(ICell cell)
+        private Vector2Int _coordinate;
+        private Image _image;
+        private Color _previousColor;
+        
+        private void Start()
         {
-            Cell = new HexCell(cell.GridPosition, cell.IsWalkable);
+            _image = GetComponent<Image>();
+        }
+
+        public void SetupCell(Vector2Int coordinate)
+        {
+            _coordinate = coordinate;
         }
         
-        private void Reset()
+        public void Reset()
         {
-            notWalkableIcon.gameObject.SetActive(false);
-            characterIcon.gameObject.SetActive(false);
-            Cell.SetWalkable(true);
+            _image.color = Color.white;
+            _previousColor = Color.white;
+            characterIcon.SetActive(false);
         }
 
         private void ToggleWalkable()
         {
-            Cell.SetWalkable(!Cell.IsWalkable);
-            notWalkableIcon.gameObject.SetActive(!Cell.IsWalkable);
+            MapController.OnCellWalkableToggled?.Invoke(_coordinate);
+            notWalkableIcon.gameObject.SetActive(!notWalkableIcon.gameObject.activeInHierarchy);
         }
 
-        public void ToggleHighlight()
+        public void ShowHero()
         {
-            GetComponent<Image>().color = Color.yellow;
+            characterIcon.SetActive(true);
+        }
+
+        public void HighlightColor()
+        {
+            _image.color = Color.yellow;
+            _previousColor = Color.yellow;
         }
         
         public void OnPointerClick(PointerEventData eventData)
@@ -41,27 +54,25 @@ namespace HexagonGridPathfinder.Sample
             switch (eventData.button)
             {
                 case PointerEventData.InputButton.Left:
-                    MapController.OnCellChosen?.Invoke(Cell);
+                    if (!notWalkableIcon.activeInHierarchy)
+                        MapController.OnCellChosen?.Invoke(_coordinate);
                     break;
                 case PointerEventData.InputButton.Right:
                     ToggleWalkable();
+                    MapController.OnPathReset?.Invoke();
                 break;
             }
         }
 
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            
-        }
-        
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GetComponent<Image>().color = Color.gray;
+            _previousColor = _image.color;
+            _image.color = Color.gray;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GetComponent<Image>().color = Color.white;
+            _image.color = _previousColor;
         }
     }
 }

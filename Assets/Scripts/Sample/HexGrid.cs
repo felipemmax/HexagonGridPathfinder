@@ -25,6 +25,8 @@ namespace HexagonGridPathfinder.Sample
             _mapController = FindObjectOfType<MapController>();
             _hexCellButtons = new Dictionary<Vector2Int, HexCellButton>();
             MapController.OnPathDefined += HighlightPath;
+            MapController.OnPathReset += ResetPath;
+            MapController.OnStartPositionDefined += StartPositionDefined;
             CalculateHexDimensions();
             SpawnHexGrid();
         }
@@ -33,7 +35,20 @@ namespace HexagonGridPathfinder.Sample
         {
             foreach (ICell cell in path)
             {
-                _hexCellButtons[cell.GridPosition].ToggleHighlight();
+                _hexCellButtons[cell.GridPosition].HighlightColor();
+            }
+        }
+
+        private void StartPositionDefined(Vector2Int coordinate)
+        {
+            _hexCellButtons[coordinate].ShowHero();
+        }
+
+        private void ResetPath()
+        {
+            foreach (HexCellButton hexCellButton in _hexCellButtons.Values)
+            {
+                hexCellButton.Reset();
             }
         }
 
@@ -68,7 +83,7 @@ namespace HexagonGridPathfinder.Sample
                     _hexCellButtons.Add(gridCoordinate, hexCellButton);
                     ICell cell = new HexCell(gridCoordinate, true);
                     hexCells.Add(cell);
-                    hexCellButton.SetupCell(cell);
+                    hexCellButton.SetupCell(gridCoordinate);
                 }
             }
            
