@@ -1,4 +1,4 @@
-# Hexagon Grid Pathfinding
+# Unity Hexagon Grid Pathfinding
 This project presents a utility for handling pathfinding on a hexagonal grid in Unity. It uses A* algorithm, a popular choice for grid-based path finding which is highly suitable for games, especially strategy and turn-based games.
 
 ## Core Elements
